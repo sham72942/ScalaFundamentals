@@ -1,6 +1,5 @@
 package Futures
 
-
 // 1 - the imports
 import java.lang.Thread.sleep
 import java.util.concurrent.{Executors, ThreadFactory}
@@ -13,7 +12,7 @@ object Futures extends App {
   implicit val ex: ExecutionContext = ExecutionContext.fromExecutor(
     new java.util.concurrent.ForkJoinPool(initialParallelism)
   )
-  blockingFutures
+  nonBlockingFutures
 
   def two = Future {
     sleep(500)
@@ -24,6 +23,12 @@ object Futures extends App {
     1 to 10 foreach { _ =>
       val result = Await.result(two, Duration("1 second"))
       println(result)
+    }
+  }
+
+  def nonBlockingFutures() = {
+    1 to 10 foreach { _ =>
+      two.map(println)
     }
   }
 

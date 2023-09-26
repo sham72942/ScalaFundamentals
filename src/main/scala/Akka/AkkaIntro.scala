@@ -61,6 +61,9 @@ object GreeterMain {
 object AkkaIntro extends App {
   val greeterMain: ActorSystem[GreeterMain.GreeterCommand] =
     ActorSystem(GreeterMain(), "AkkaQuickStart")
-  greeterMain ! SayHello("Charles")
+  (1 to 100).toList.foldLeft(0) { (b, a) =>
+    greeterMain ! SayHello(s"Charles${b}")
+    b + a
+  }
   greeterMain ! Stop()
 }
